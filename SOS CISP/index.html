@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SOS CISP - Comunicação de Emergência</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div id="splash-screen" class="splash-screen">
+        <div class="splash-content">
+            <div class="logo-container">
+                <img src="assets/imagens/logo.png" alt="SOS CISP Logo" class="logo-image">
+                <h1 class="logo-text">SOS CISP</h1>
+                <p class="logo-subtitle">Comunicação de Emergência</p>
+            </div>
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>Carregando...</p>
+                <div class="progress-bar">
+                    <div class="progress-fill"></div>
+                </div>
+                <p class="loading-text">Inicializando sistema SOS CISP</p>
+                <button onclick="skipSplash()" style="margin-top: 20px; padding: 10px 20px; background: #333; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                    Pular Carregamento (Debug)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela de Seleção de Acesso -->
+    <div id="access-selection" class="screen hidden">
+        <div class="container">
+            <div class="header">
+                <h1>SOS CISP</h1>
+                <p>Selecione o tipo de acesso</p>
+            </div>
+            
+            <div class="access-options">
+                <div class="access-card" data-access="police">
+                    <div class="access-icon">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h3>👮‍♂️ Polícia</h3>
+                    <p>Acesso para agentes policiais</p>
+                </div>
+                
+                <div class="access-card" data-access="citizen">
+                    <div class="access-icon">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h3>🙋‍♂️ Cidadão</h3>
+                    <p>Acesso para cidadãos</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela de Login - Polícia -->
+    <div id="police-login" class="screen hidden">
+        <div class="container">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('access-selection')">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2>Login - Polícia</h2>
+            </div>
+            
+            <form id="police-login-form" class="login-form">
+                <div class="form-group">
+                    <label for="police-id">ID do Agente</label>
+                    <input type="text" id="police-id" name="police-id" placeholder="Ex: POL007" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="police-code">Código Interno</label>
+                    <input type="password" id="police-code" name="police-code" placeholder="Ex: CISP2007" required>
+                    <small style="color: #ccc; font-size: 0.8em;">Credenciais padrão: POL007 / CISP2007</small>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Entrar</button>
+                <button type="button" onclick="showSystemInfo()" style="margin-top: 10px; padding: 5px 10px; background: #666; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 0.8em;">
+                    ℹ️ Info do Sistema
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Painel Policial -->
+    <div id="police-panel" class="screen hidden">
+        <div class="container">
+            <div class="panel-header">
+                <div class="user-info">
+                    <i class="fas fa-user-shield"></i>
+                    <span id="police-name">Agente POL007</span>
+                </div>
+                <div class="menu-btn" onclick="toggleMenu()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sair</span>
+                </div>
+            </div>
+            
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="messages-count">0</h3>
+                        <p>Mensagens</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="emergencies-count">0</h3>
+                        <p>Emergências</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="network-status">Online</h3>
+                        <p>Rede</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="messages-section">
+                <div class="section-header">
+                    <h3>Mensagens Recebidas</h3>
+                    <div class="filters">
+                        <button class="filter-btn active" data-filter="all">Todas</button>
+                        <button class="filter-btn" data-filter="text">Texto</button>
+                        <button class="filter-btn" data-filter="audio">Áudio</button>
+                        <button class="filter-btn" data-filter="location">Localização</button>
+                    </div>
+                </div>
+                
+                <div id="messages-list" class="messages-list">
+                    <!-- Mensagens serão carregadas dinamicamente -->
+                </div>
+            </div>
+        </div>
+        
+        <!-- Menu de Opções -->
+        <div id="menu-overlay" class="menu-overlay hidden">
+            <div class="menu-content">
+                <div class="menu-item" onclick="showSettings()">
+                    <i class="fas fa-cog"></i>
+                    <span>Configurações</span>
+                </div>
+                <div class="menu-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sair</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tela de Login - Cidadão -->
+    <div id="citizen-login" class="screen hidden">
+        <div class="container">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('access-selection')">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2>Login - Cidadão</h2>
+            </div>
+            
+            <form id="citizen-login-form" class="login-form">
+                <div class="form-group">
+                    <label for="citizen-bi">Número do BI</label>
+                    <input type="text" id="citizen-bi" name="citizen-bi" placeholder="Ex: 123456789" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="citizen-password">Senha</label>
+                    <input type="password" id="citizen-password" name="citizen-password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Entrar</button>
+                
+                <div class="form-footer">
+                    <p>Não tem conta? <a href="#" onclick="showScreen('citizen-register')">Cadastrar-se</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tela de Cadastro - Cidadão -->
+    <div id="citizen-register" class="screen hidden">
+        <div class="container">
+            <div class="header">
+                <button class="back-btn" onclick="showScreen('citizen-login')">
+                    <i class="fas fa-arrow-left"></i>
+                </button>
+                <h2>Cadastro - Cidadão</h2>
+            </div>
+            
+            <form id="citizen-register-form" class="register-form">
+                <div class="form-group">
+                    <label for="register-name">Nome Completo</label>
+                    <input type="text" id="register-name" name="register-name" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="register-bi">Número do BI</label>
+                    <input type="text" id="register-bi" name="register-bi" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="register-email">Email</label>
+                    <input type="email" id="register-email" name="register-email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="register-phone">Telefone</label>
+                    <input type="tel" id="register-phone" name="register-phone" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="register-address">Endereço</label>
+                    <textarea id="register-address" name="register-address" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="register-password">Senha</label>
+                    <input type="password" id="register-password" name="register-password" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="register-confirm-password">Confirmar Senha</label>
+                    <input type="password" id="register-confirm-password" name="register-confirm-password" required>
+                </div>
+                
+                <button type="submit" class="btn btn-primary">Cadastrar</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tela Principal - Cidadão -->
+    <div id="citizen-main" class="screen hidden">
+        <div class="container">
+            <div class="main-header">
+                <h1>SOS CISP</h1>
+                <p>Comunicação de Emergência</p>
+                <div class="menu-btn" onclick="toggleCitizenMenu()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sair</span>
+                </div>
+            </div>
+            
+            <div class="user-card">
+                <div class="user-info">
+                    <i class="fas fa-user"></i>
+                    <span id="citizen-name">Nome do Cidadão</span>
+                </div>
+            </div>
+            
+            <div class="sos-section">
+                <button id="sos-button" class="sos-button" onclick="sendSOS()">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>SOS</span>
+                </button>
+                <p class="sos-text">Pressione para enviar uma solicitação de emergência</p>
+            </div>
+            
+            <div class="location-section">
+                <h3>Localização Atual</h3>
+                <div id="location-display" class="location-display">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span id="location-text">Localização não disponível</span>
+                </div>
+                <button id="send-location-btn" class="btn btn-secondary" onclick="sendLocation()">
+                    <i class="fas fa-location-arrow"></i>
+                    Enviar minha localização
+                </button>
+            </div>
+            
+            <div class="quick-messages">
+                <h3>Mensagens Rápidas</h3>
+                <div class="quick-messages-grid">
+                    <button class="quick-message-btn" onclick="sendQuickMessage('Roubo')">Roubo</button>
+                    <button class="quick-message-btn" onclick="sendQuickMessage('Violência')">Violência</button>
+                    <button class="quick-message-btn" onclick="sendQuickMessage('Estou a ser perseguido')">Estou a ser perseguido</button>
+                    <button class="quick-message-btn" onclick="sendQuickMessage('Acidente')">Acidente</button>
+                    <button class="quick-message-btn" onclick="sendQuickMessage('Incêndio')">Incêndio</button>
+                    <button class="quick-message-btn" onclick="sendQuickMessage('Outro')">Outro</button>
+                </div>
+            </div>
+            
+            <div class="audio-section">
+                <h3>Gravação de Áudio</h3>
+                <button id="record-audio-btn" class="btn btn-secondary" onclick="toggleAudioRecording()">
+                    <i class="fas fa-microphone"></i>
+                    <span id="audio-btn-text">Iniciar Gravação</span>
+                </button>
+            </div>
+            
+            <div class="custom-message">
+                <h3>Mensagem Personalizada</h3>
+                <div class="message-input-container">
+                    <textarea id="custom-message-input" placeholder="Descreva sua emergência..."></textarea>
+                    <button id="send-custom-message-btn" class="btn btn-primary" onclick="sendCustomMessage()">
+                        <i class="fas fa-paper-plane"></i>
+                        Enviar
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Menu do Cidadão -->
+        <div id="citizen-menu-overlay" class="menu-overlay hidden">
+            <div class="menu-content">
+                <div class="menu-item" onclick="showCitizenSettings()">
+                    <i class="fas fa-cog"></i>
+                    <span>Configurações</span>
+                </div>
+                <div class="menu-item" onclick="citizenLogout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sair</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Painel do Administrador -->
+    <div id="admin-panel" class="screen hidden">
+        <div class="container">
+            <div class="panel-header">
+                <h2>Painel Administrativo</h2>
+                <div class="admin-stats">
+                    <div class="admin-stat">
+                        <h3 id="total-users">0</h3>
+                        <p>Usuários</p>
+                    </div>
+                    <div class="admin-stat">
+                        <h3 id="total-police">0</h3>
+                        <p>Policiais</p>
+                    </div>
+                    <div class="admin-stat">
+                        <h3 id="total-citizens">0</h3>
+                        <p>Cidadãos</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="admin-sections">
+                <div class="admin-section">
+                    <h3>Gerenciar Usuários</h3>
+                    <div id="users-list" class="users-list">
+                        <!-- Lista de usuários será carregada dinamicamente -->
+                    </div>
+                </div>
+                
+                <div class="admin-section">
+                    <h3>Estatísticas Gerais</h3>
+                    <div id="general-stats" class="general-stats">
+                        <!-- Estatísticas serão carregadas dinamicamente -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/unified.js"></script>
+</body>
+</html> 
