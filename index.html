@@ -45,7 +45,7 @@
                     <div class="access-icon">
                         <i class="fas fa-user-shield"></i>
                     </div>
-                    <h3>👮‍♂️ Polícia</h3>
+                    <h3>Polícia</h3>
                     <p>Acesso para agentes policiais</p>
                 </div>
                 
@@ -53,7 +53,7 @@
                     <div class="access-icon">
                         <i class="fas fa-user"></i>
                     </div>
-                    <h3>🙋‍♂️ Cidadão</h3>
+                    <h3>Cidadão</h3>
                     <p>Acesso para cidadãos</p>
                 </div>
             </div>
@@ -83,9 +83,6 @@
                 </div>
                 
                 <button type="submit" class="btn btn-primary">Entrar</button>
-                <button type="button" onclick="showSystemInfo()" style="margin-top: 10px; padding: 5px 10px; background: #666; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 0.8em;">
-                    ℹ️ Info do Sistema
-                </button>
             </form>
         </div>
     </div>
@@ -98,7 +95,7 @@
                     <i class="fas fa-user-shield"></i>
                     <span id="police-name">Agente POL007</span>
                 </div>
-                <div class="menu-btn" onclick="toggleMenu()">
+                <div class="menu-btn" onclick="logout()">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Sair</span>
                 </div>
@@ -255,7 +252,7 @@
             <div class="main-header">
                 <h1>SOS CISP</h1>
                 <p>Comunicação de Emergência</p>
-                <div class="menu-btn" onclick="toggleCitizenMenu()">
+                <div class="menu-btn" onclick="citizenLogout()">
                     <i class="fas fa-sign-out-alt"></i>
                     <span>Sair</span>
                 </div>
@@ -376,4 +373,4 @@
 
     <script src="assets/js/unified.js"></script>
 </body>
-</html> 
+</html>
