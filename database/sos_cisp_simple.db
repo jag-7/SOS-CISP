@@ -1,0 +1,56 @@
+-- SOS CISP - Banco de Dados Simples
+-- SQLite Database
+
+-- Tabela de usuários policiais
+CREATE TABLE police_users (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    code TEXT NOT NULL,
+    rank TEXT,
+    department TEXT,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de usuários cidadãos
+CREATE TABLE citizen_users (
+    bi TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT,
+    phone TEXT,
+    address TEXT,
+    password TEXT NOT NULL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Tabela de mensagens/alertas
+CREATE TABLE messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    sender_id TEXT NOT NULL,
+    sender_type TEXT NOT NULL, -- 'police' ou 'citizen'
+    sender_name TEXT NOT NULL,
+    message_type TEXT NOT NULL, -- 'text', 'audio', 'location', 'sos'
+    content TEXT,
+    latitude REAL,
+    longitude REAL,
+    status TEXT DEFAULT 'pending', -- 'pending', 'processing', 'completed'
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Inserir dados padrão
+INSERT INTO police_users (id, name, code, rank, department) VALUES 
+('POL007', 'Agente POL007', 'CISP2007', 'Agente', 'CISP'),
+('POL008', 'Agente POL008', 'CISP2008', 'Agente', 'CISP'),
+('POL009', 'Agente POL009', 'CISP2009', 'Agente', 'CISP');
+
+INSERT INTO citizen_users (bi, name, email, phone, address, password) VALUES 
+('123456789', 'João Silva', 'joao@email.com', '244123456', 'Rua das Flores, 123', '123456'),
+('987654321', 'Maria Santos', 'maria@email.com', '244654321', 'Avenida Principal, 456', '123456'),
+('555666777', 'Pedro Costa', 'pedro@email.com', '244555666', 'Travessa da Paz, 789', '123456');
+
+-- Inserir algumas mensagens de exemplo
+INSERT INTO messages (sender_id, sender_type, sender_name, message_type, content, latitude, longitude, status) VALUES 
+('123456789', 'citizen', 'João Silva', 'sos', 'SOS - Emergência', -8.8383, 13.2344, 'pending'),
+('987654321', 'citizen', 'Maria Santos', 'text', 'Roubo em andamento na Rua das Flores', -8.8383, 13.2344, 'processing'),
+('555666777', 'citizen', 'Pedro Costa', 'location', 'Localização enviada', -8.8383, 13.2344, 'completed'),
+('123456789', 'citizen', 'João Silva', 'text', 'Violência doméstica', -8.8383, 13.2344, 'pending'),
+('987654321', 'citizen', 'Maria Santos', 'audio', 'Gravação de áudio', -8.8383, 13.2344, 'processing'); 
