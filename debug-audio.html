@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug Áudio - SOS CISP</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #1a1a1a;
+            color: white;
+        }
+        .debug-container {
+            background: #2a2a2a;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        button.recording { background: #dc3545; }
+        .status {
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .success { background: #28a745; }
+        .error { background: #dc3545; }
+        .info { background: #17a2b8; }
+        .warning { background: #ffc107; color: #000; }
+        #logs {
+            background: #000;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+        .message-item {
+            background: #333;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border-left: 4px solid #007bff;
+        }
+        .audio-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="debug-container">
+        <h1>🔧 Debug Áudio - SOS CISP</h1>
+        
+        <div class="status info">
+            <strong>Status:</strong> <span id="status">Inicializando...</span>
+        </div>
+        
+        <div>
+            <button id="recordBtn">🎤 Gravar Áudio</button>
+            <button id="testBtn">🧪 Testar Sistema</button>
+            <button id="clearBtn">🗑️ Limpar Dados</button>
+            <button id="loadBtn">📂 Carregar Mensagens</button>
+        </div>
+    </div>
+
+    <div class="debug-container">
+        <h3>📊 Dados do localStorage</h3>
+        <div id="storageInfo"></div>
+    </div>
+
+    <div class="debug-container">
+        <h3>💬 Mensagens Encontradas</h3>
+        <div id="messagesList"></div>
+    </div>
+
+    <div class="debug-container">
+        <h3>📝 Logs de Debug</h3>
+        <div id="logs"></div>
+    </div>
+
+    <script>
+        class AudioDebugger {
+            constructor() {
+                this.isRecording = false;
+                this.audioRecorder = null;
+                this.audioChunks = [];
+                this.setupEventListeners();
+                this.updateStatus('Pronto para debug');
+                this.log('Sistema de debug inicializado');
+                this.loadStorageInfo();
+            }
+            
+            setupEventListeners() {
+                document.getElementById('recordBtn').addEventListener('click', () => {
+                    if (!this.isRecording) {
+                        this.startRecording();
+                    } else {
+                        this.stopRecording();
+                    }
+                });
+                
+                document.getElementById('testBtn').addEventListener('click', () => {
+                    this.testAudioSystem();
+                });
+                
+                document.getElementById('clearBtn').addEventListener('click', () => {
+                    this.clearData();
+                });
+                
+                document.getElementById('loadBtn').addEventListener('click', () => {
+                    this.loadMessages();
+                });
+            }
+            
+            log(message) {
+                const logsDiv = document.getElementById('logs');
+                const timestamp = new Date().toLocaleTimeString();
+                logsDiv.textContent += `[${timestamp}] ${message}\n`;
+                logsDiv.scrollTop = logsDiv.scrollHeight;
+                console.log(message);
+            }
+            
+            updateStatus(message) {
+                document.getElementById('status').textContent = message;
+            }
+            
+            loadStorageInfo() {
+                try {
+                    const messages = JSON.parse(localStorage.getItem('messages') || '[]');
+                    const stats = JSON.parse(localStorage.getItem('stats') || '{}');
+                    
+                    const storageInfo = document.getElementById('storageInfo');
+                    storageInfo.innerHTML = `
+                        <div class="status info">
+                            <strong>Mensagens:</strong> ${messages.length}<br>
+                            <strong>Áudios:</strong> ${messages.filter(m => m.message_type === 'audio').length}<br>
+                            <strong>Com audioData:</strong> ${messages.filter(m => m.audioData).length}<br>
+                            <strong>Stats:</strong> ${JSON.stringify(stats, null, 2)}
+                        </div>
+                    `;
+                    
+                    this.log(`Storage carregado: ${messages.length} mensagens`);
+                } catch (error) {
+                    this.log(`Erro ao carregar storage: ${error.message}`);
+                }
+            }
+            
+            async startRecording() {
+                try {
+                    this.log('Solicitando permissão de microfone...');
+                    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+                    
+                    this.audioRecorder = new MediaRecorder(stream);
+                    this.audioChunks = [];
+                    
+                    this.audioRecorder.ondataavailable = (e) => {
+                        this.audioChunks.push(e.data);
+                        this.log(`Chunk recebido: ${e.data.size} bytes`);
+                    };
+                    
+                    this.audioRecorder.onstop = () => {
+                        this.log('Gravação finalizada');
+                        const blob = new Blob(this.audioChunks, { type: 'audio/wav' });
+                        this.saveAudioMessage(blob);
+                    };
+                    
+                    this.audioRecorder.start();
+                    this.isRecording = true;
+                    
+                    document.getElementById('recordBtn').textContent = '⏹️ Parar Gravação';
+                    document.getElementById('recordBtn').classList.add('recording');
+                    this.updateStatus('Gravando...');
+                    this.log('Gravação iniciada');
+                    
+                } catch (error) {
+                    this.log(`Erro ao iniciar gravação: ${error.message}`);
+                    this.updateStatus('Erro ao iniciar gravação');
+                }
+            }
+            
+            stopRecording() {
+                if (this.audioRecorder && this.isRecording) {
+                    this.audioRecorder.stop();
+                    this.audioRecorder.stream.getTracks().forEach(track => track.stop());
+                    
+                    this.isRecording = false;
+                    document.getElementById('recordBtn').textContent = '🎤 Gravar Áudio';
+                    document.getElementById('recordBtn').classList.remove('recording');
+                    this.updateStatus('Processando...');
+                }
+            }
+            
+            saveAudioMessage(blob) {
+                this.log(`Processando áudio: ${blob.size} bytes`);
+                
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const audioData = reader.result;
+                    this.log(`Áudio convertido: ${audioData.length} caracteres`);
+                    
+                    // Simular mensagem como no sistema real
+                    const message = {
+                        id: Date.now().toString(),
+                        sender_id: 'TEST123',
+                        sender_type: 'citizen',
+                        sender_name: 'Usuário Teste',
+                        message_type: 'audio',
+                        content: 'Gravação de áudio',
+                        audioData: audioData,
+                        latitude: -8.830705,
+                        longitude: 13.228154,
+                        timestamp: new Date().toISOString(),
+                        status: 'pending'
+                    };
+                    
+                    // Salvar no localStorage
+                    const messages = JSON.parse(localStorage.getItem('messages') || '[]');
+                    messages.push(message);
+                    localStorage.setItem('messages', JSON.stringify(messages));
+                    
+                    this.log(`Mensagem salva com ID: ${message.id}`);
+                    this.updateStatus('Áudio salvo com sucesso!');
+                    this.loadStorageInfo();
+                    this.loadMessages();
+                };
+                
+                reader.onerror = (error) => {
+                    this.log(`Erro na conversão: ${error.message}`);
+                    this.updateStatus('Erro ao processar áudio');
+                };
+                
+                reader.readAsDataURL(blob);
+            }
+            
+            loadMessages() {
+                try {
+                    const messages = JSON.parse(localStorage.getItem('messages') || '[]');
+                    const container = document.getElementById('messagesList');
+                    
+                    if (messages.length === 0) {
+                        container.innerHTML = '<div class="status warning">Nenhuma mensagem encontrada</div>';
+                        return;
+                    }
+                    
+                    container.innerHTML = messages.map(message => {
+                        const audioButton = message.message_type === 'audio' && message.audioData ? 
+                            `<button class="audio-btn" onclick="debugger.playAudio('${message.id}')">
+                                ▶️ Reproduzir
+                            </button>` : '';
+                        
+                        const locationLink = message.latitude && message.longitude ? 
+                            `<br><small>📍 <a href="https://www.google.com/maps?q=${message.latitude},${message.longitude}" target="_blank" style="color: #007bff;">Abrir no Maps</a></small>` : '';
+                        
+                        return `
+                            <div class="message-item">
+                                <strong>${message.sender_name}</strong> - ${message.message_type}<br>
+                                <small>${new Date(message.timestamp).toLocaleString()}</small><br>
+                                <small>${message.content}</small>
+                                ${audioButton}
+                                ${locationLink}
+                                <br><small style="color: #888;">ID: ${message.id}</small>
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    this.log(`Mensagens carregadas: ${messages.length}`);
+                } catch (error) {
+                    this.log(`Erro ao carregar mensagens: ${error.message}`);
+                }
+            }
+            
+            playAudio(messageId) {
+                try {
+                    const messages = JSON.parse(localStorage.getItem('messages') || '[]');
+                    const message = messages.find(m => m.id === messageId);
+                    
+                    if (!message || !message.audioData) {
+                        this.log(`Áudio não encontrado para ID: ${messageId}`);
+                        return;
+                    }
+                    
+                    this.log(`Reproduzindo áudio: ${messageId}`);
+                    const audio = new Audio(message.audioData);
+                    
+                    audio.play().then(() => {
+                        this.log('Áudio iniciado com sucesso');
+                        this.updateStatus('Reproduzindo áudio...');
+                    }).catch(error => {
+                        this.log(`Erro ao reproduzir: ${error.message}`);
+                        this.updateStatus('Erro ao reproduzir');
+                    });
+                } catch (error) {
+                    this.log(`Erro ao reproduzir áudio: ${error.message}`);
+                }
+            }
+            
+            testAudioSystem() {
+                this.log('=== TESTE DO SISTEMA DE ÁUDIO ===');
+                
+                // Testar localStorage
+                try {
+                    const messages = JSON.parse(localStorage.getItem('messages') || '[]');
+                    this.log(`✓ localStorage acessível: ${messages.length} mensagens`);
+                } catch (error) {
+                    this.log(`✗ Erro no localStorage: ${error.message}`);
+                }
+                
+                // Testar MediaRecorder
+                if (typeof MediaRecorder !== 'undefined') {
+                    this.log('✓ MediaRecorder disponível');
+                } else {
+                    this.log('✗ MediaRecorder não disponível');
+                }
+                
+                // Testar getUserMedia
+                navigator.mediaDevices.getUserMedia({ audio: true })
+                    .then(() => {
+                        this.log('✓ Permissão de microfone concedida');
+                    })
+                    .catch(error => {
+                        this.log(`✗ Erro na permissão de microfone: ${error.message}`);
+                    });
+                
+                this.log('=== FIM DO TESTE ===');
+            }
+            
+            clearData() {
+                localStorage.removeItem('messages');
+                localStorage.removeItem('stats');
+                this.log('Dados limpos');
+                this.updateStatus('Dados limpos');
+                this.loadStorageInfo();
+                this.loadMessages();
+            }
+        }
+        
+        // Inicializar quando a página carregar
+        let debugger;
+        document.addEventListener('DOMContentLoaded', () => {
+            debugger = new AudioDebugger();
+            debugger.loadMessages();
+        });
+    </script>
+</body>
+</html>

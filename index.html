@@ -1,192 +1,305 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SOS CISP - Comunicação de Emergência</title>
+    <title>SOS CISP - Sistema de Emergência Inteligente</title>
+    <meta name="description" content="Sistema de comunicação de emergência para cidadãos e policiais">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="assets/imagens/logo.png">
 </head>
 <body>
-    <!-- Splash Screen -->
+    <!-- Splash Screen Moderno -->
     <div id="splash-screen" class="splash-screen">
+        <div class="splash-background">
+            <div class="splash-particles"></div>
+        </div>
         <div class="splash-content">
             <div class="logo-container">
-                <img src="assets/imagens/logo.png" alt="SOS CISP Logo" class="logo-image">
-                <h1 class="logo-text">SOS CISP</h1>
-                <p class="logo-subtitle">Comunicação de Emergência</p>
-            </div>
-            <div class="loading-spinner">
-                <div class="spinner"></div>
-                <p>Carregando...</p>
-                <div class="progress-bar">
-                    <div class="progress-fill"></div>
+                <div class="logo-wrapper">
+                    <img src="assets/imagens/logo.png" alt="SOS CISP Logo" class="logo-image">
+                    <div class="logo-glow"></div>
                 </div>
-                <p class="loading-text">Inicializando sistema SOS CISP</p>
-                <button onclick="skipSplash()" style="margin-top: 20px; padding: 10px 20px; background: #333; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                    Pular Carregamento (Debug)
+                <h1 class="logo-text">SOS CISP</h1>
+                <p class="logo-subtitle">Sistema de Emergência Inteligente</p>
+                <div class="logo-badge">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Segurança Pública</span>
+                </div>
+            </div>
+            <div class="loading-section">
+                <div class="loading-spinner">
+                    <div class="spinner-ring"></div>
+                </div>
+                <div class="loading-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill"></div>
+                    </div>
+                    <p class="loading-text">Inicializando sistema de segurança</p>
+                </div>
+                <button onclick="skipSplash()" class="skip-button">
+                    <i class="fas fa-forward"></i>
+                    Pular
                 </button>
             </div>
         </div>
     </div>
 
     <!-- Tela de Seleção de Acesso -->
-    <div id="access-selection" class="screen hidden">
+    <div id="access-selection" class="screen hidden" style="padding-left: 550PX; padding-top: 150PX;">
         <div class="container">
-            <div class="header">
-                <h1>SOS CISP</h1>
-                <p>Selecione o tipo de acesso</p>
+            <div class="header-section">
+                <div class="header-content">
+                    <h1 class="main-title">SOS CISP</h1>
+                    <p class="main-subtitle">Escolha seu tipo de acesso</p>
+                    <div class="header-badge">
+                        <i class="fas fa-lock"></i>
+                        <span>Sistema Seguro</span>
+                    </div>
+                </div>
             </div>
             
-            <div class="access-options">
-                <div class="access-card" data-access="police">
-                    <div class="access-icon">
-                        <i class="fas fa-user-shield"></i>
+            <div class="access-grid">
+                <div class="access-card police-card" data-access="police">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="card-badge">Oficial</div>
                     </div>
-                    <h3>Polícia</h3>
-                    <p>Acesso para agentes policiais</p>
+                    <div class="card-content">
+                        <h3>Acesso Policial</h3>
+                        <p>Painel de controle para agentes de segurança pública</p>
+                        <ul class="card-features">
+                            <li><i class="fas fa-check"></i> Visualizar emergências</li>
+                            <li><i class="fas fa-check"></i> Gerenciar mensagens</li>
+                            <li><i class="fas fa-check"></i> Estatísticas em tempo real</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <button class="access-button">
+                            <span>Acessar</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
                 </div>
                 
-                <div class="access-card" data-access="citizen">
-                    <div class="access-icon">
-                        <i class="fas fa-user"></i>
+                <div class="access-card citizen-card" data-access="citizen">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="card-badge">Cidadão</div>
                     </div>
-                    <h3>Cidadão</h3>
-                    <p>Acesso para cidadãos</p>
+                    <div class="card-content">
+                        <h3>Acesso Cidadão</h3>
+                        <p>Interface para reportar emergências e solicitar ajuda</p>
+                        <ul class="card-features">
+                            <li><i class="fas fa-check"></i> Botão SOS de emergência</li>
+                            <li><i class="fas fa-check"></i> Envio de localização</li>
+                            <li><i class="fas fa-check"></i> Mensagens de áudio</li>
+                        </ul>
+                    </div>
+                    <div class="card-footer">
+                        <button class="access-button">
+                            <span>Acessar</span>
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Tela de Login - Polícia -->
-    <div id="police-login" class="screen hidden">
+    <div id="police-login" class="screen hidden" style="padding-left: 550PX; padding-top: 150PX;">
         <div class="container">
-            <div class="header">
-                <button class="back-btn" onclick="showScreen('access-selection')">
+            <div class="login-header">
+                <button class="back-button" onclick="showScreen('access-selection')">
                     <i class="fas fa-arrow-left"></i>
                 </button>
-                <h2>Login - Polícia</h2>
+                <div class="login-title">
+                    <h2>Acesso Policial</h2>
+                    <p>Faça login com suas credenciais oficiais</p>
+                </div>
             </div>
             
             <form id="police-login-form" class="login-form">
                 <div class="form-group">
                     <label for="police-id">ID do Agente</label>
-                    <input type="text" id="police-id" name="police-id" placeholder="Ex: POL007" required>
+                    <div class="input-wrapper">
+                        <i class="fas fa-id-card input-icon"></i>
+                        <input type="text" id="police-id" name="police-id" placeholder="Ex: POL007" required>
+                    </div>
                 </div>
                 
                 <div class="form-group">
                     <label for="police-code">Código Interno</label>
-                    <input type="password" id="police-code" name="police-code" placeholder="Ex: CISP2007" required>
-                    <small style="color: #ccc; font-size: 0.8em;">Credenciais padrão: POL007 / CISP2007</small>
+                    <div class="input-wrapper">
+                        <i class="fas fa-key input-icon"></i>
+                        <input type="password" id="police-code" name="police-code" placeholder="Ex: CISP2007" required>
+                    </div>
+                    <small class="form-hint">
+                        <i class="fas fa-info-circle"></i>
+                        Credenciais padrão: POL007 / CISP2007
+                    </small>
                 </div>
                 
-                <button type="submit" class="btn btn-primary">Entrar</button>
+                <button type="submit" class="submit-button">
+                    <span>Entrar no Sistema</span>
+                    <i class="fas fa-sign-in-alt"></i>
+                </button>
             </form>
         </div>
     </div>
 
-    <!-- Painel Policial -->
+    <!-- Painel Policial Moderno -->
     <div id="police-panel" class="screen hidden">
-        <div class="container">
-            <div class="panel-header">
-                <div class="user-info">
-                    <i class="fas fa-user-shield"></i>
-                    <span id="police-name">Agente POL007</span>
+        <div class="dashboard-container">
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <div class="user-profile">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="profile-info">
+                            <h3 id="police-name">Agente POL007</h3>
+                            <span class="profile-role">Agente de Segurança</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="menu-btn" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Sair</span>
+                <div class="header-right">
+                    <div class="header-actions">
+                        <button class="action-button" onclick="refreshData()">
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                        <button class="action-button" onclick="showSettings()">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                        <button class="logout-button" onclick="logout()">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Sair</span>
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </header>
             
-            <div class="stats-cards">
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-envelope"></i>
+            <main class="dashboard-main">
+                <div class="stats-overview">
+                    <div class="stat-card primary">
+                        <div class="stat-icon">
+                            <i class="fas fa-envelope"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="messages-count">0</h3>
+                            <p>Mensagens</p>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+12%</span>
+                        </div>
                     </div>
-                    <div class="stat-info">
-                        <h3 id="messages-count">0</h3>
-                        <p>Mensagens</p>
+                    
+                    <div class="stat-card warning">
+                        <div class="stat-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="emergencies-count">0</h3>
+                            <p>Emergências</p>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-arrow-up"></i>
+                            <span>+5%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="stat-card success">
+                        <div class="stat-icon">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="network-status">Online</h3>
+                            <p>Rede</p>
+                        </div>
+                        <div class="stat-trend">
+                            <i class="fas fa-circle"></i>
+                            <span>Ativo</span>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-exclamation-triangle"></i>
+                <div class="messages-dashboard">
+                    <div class="section-header">
+                        <div class="section-title">
+                            <h3>Mensagens Recebidas</h3>
+                            <span class="section-badge" id="messages-badge">0 novas</span>
+                        </div>
+                        <div class="section-filters">
+                            <button class="filter-button active" data-filter="all">
+                                <i class="fas fa-list"></i>
+                                <span>Todas</span>
+                            </button>
+                            <button class="filter-button" data-filter="text">
+                                <i class="fas fa-comment"></i>
+                                <span>Texto</span>
+                            </button>
+                            <button class="filter-button" data-filter="audio">
+                                <i class="fas fa-microphone"></i>
+                                <span>Áudio</span>
+                            </button>
+                            <button class="filter-button" data-filter="location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                <span>Localização</span>
+                            </button>
+                        </div>
                     </div>
-                    <div class="stat-info">
-                        <h3 id="emergencies-count">0</h3>
-                        <p>Emergências</p>
+                    
+                    <div id="messages-list" class="messages-list">
+                        <!-- Mensagens serão carregadas dinamicamente -->
                     </div>
                 </div>
-                
-                <div class="stat-card">
-                    <div class="stat-icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <div class="stat-info">
-                        <h3 id="network-status">Online</h3>
-                        <p>Rede</p>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="messages-section">
-                <div class="section-header">
-                    <h3>Mensagens Recebidas</h3>
-                    <div class="filters">
-                        <button class="filter-btn active" data-filter="all">Todas</button>
-                        <button class="filter-btn" data-filter="text">Texto</button>
-                        <button class="filter-btn" data-filter="audio">Áudio</button>
-                        <button class="filter-btn" data-filter="location">Localização</button>
-                    </div>
-                </div>
-                
-                <div id="messages-list" class="messages-list">
-                    <!-- Mensagens serão carregadas dinamicamente -->
-                </div>
-            </div>
-        </div>
-        
-        <!-- Menu de Opções -->
-        <div id="menu-overlay" class="menu-overlay hidden">
-            <div class="menu-content">
-                <div class="menu-item" onclick="showSettings()">
-                    <i class="fas fa-cog"></i>
-                    <span>Configurações</span>
-                </div>
-                <div class="menu-item" onclick="logout()">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Sair</span>
-                </div>
-            </div>
+            </main>
         </div>
     </div>
 
     <!-- Tela de Login - Cidadão -->
-    <div id="citizen-login" class="screen hidden">
+    <div id="citizen-login" class="screen hidden" style="padding-left: 550PX; padding-top: 150PX;">
         <div class="container">
-            <div class="header">
-                <button class="back-btn" onclick="showScreen('access-selection')">
+            <div class="login-header">
+                <button class="back-button" onclick="showScreen('access-selection')">
                     <i class="fas fa-arrow-left"></i>
                 </button>
-                <h2>Login - Cidadão</h2>
+                <div class="login-title">
+                    <h2>Acesso Cidadão</h2>
+                    <p>Entre com seus dados pessoais</p>
+                </div>
             </div>
             
             <form id="citizen-login-form" class="login-form">
                 <div class="form-group">
                     <label for="citizen-bi">Número do BI</label>
-                    <input type="text" id="citizen-bi" name="citizen-bi" placeholder="Ex: 123456789" required>
+                    <div class="input-wrapper">
+                        <i class="fas fa-id-card input-icon"></i>
+                        <input type="text" id="citizen-bi" name="citizen-bi" placeholder="Ex: 123456789" required>
+                    </div>
                 </div>
                 
                 <div class="form-group">
                     <label for="citizen-password">Senha</label>
-                    <input type="password" id="citizen-password" name="citizen-password" required>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock input-icon"></i>
+                        <input type="password" id="citizen-password" name="citizen-password" required>
+                    </div>
                 </div>
                 
-                <button type="submit" class="btn btn-primary">Entrar</button>
+                <button type="submit" class="submit-button">
+                    <span>Entrar</span>
+                    <i class="fas fa-sign-in-alt"></i>
+                </button>
                 
                 <div class="form-footer">
                     <p>Não tem conta? <a href="#" onclick="showScreen('citizen-register')">Cadastrar-se</a></p>
@@ -196,180 +309,270 @@
     </div>
 
     <!-- Tela de Cadastro - Cidadão -->
-    <div id="citizen-register" class="screen hidden">
+    <div id="citizen-register" class="screen hidden" style="padding-left: 550PX; padding-top: 150PX;">
         <div class="container">
-            <div class="header">
-                <button class="back-btn" onclick="showScreen('citizen-login')">
+            <div class="login-header">
+                <button class="back-button" onclick="showScreen('citizen-login')">
                     <i class="fas fa-arrow-left"></i>
                 </button>
-                <h2>Cadastro - Cidadão</h2>
+                <div class="login-title">
+                    <h2>Cadastro de Cidadão</h2>
+                    <p>Preencha seus dados pessoais</p>
+                </div>
             </div>
             
             <form id="citizen-register-form" class="register-form">
-                <div class="form-group">
-                    <label for="register-name">Nome Completo</label>
-                    <input type="text" id="register-name" name="register-name" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="register-name">Nome Completo</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user input-icon"></i>
+                            <input type="text" id="register-name" name="register-name" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-bi">Número do BI</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-id-card input-icon"></i>
+                            <input type="text" id="register-bi" name="register-bi" required>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="register-bi">Número do BI</label>
-                    <input type="text" id="register-bi" name="register-bi" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="register-email">Email</label>
-                    <input type="email" id="register-email" name="register-email" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="register-phone">Telefone</label>
-                    <input type="tel" id="register-phone" name="register-phone" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="register-email">Email</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-envelope input-icon"></i>
+                            <input type="email" id="register-email" name="register-email" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-phone">Telefone</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-phone input-icon"></i>
+                            <input type="tel" id="register-phone" name="register-phone" required>
+                        </div>
+                    </div>
                 </div>
                 
                 <div class="form-group">
                     <label for="register-address">Endereço</label>
-                    <textarea id="register-address" name="register-address" required></textarea>
+                    <div class="input-wrapper">
+                        <i class="fas fa-map-marker-alt input-icon"></i>
+                        <textarea id="register-address" name="register-address" required></textarea>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="register-password">Senha</label>
-                    <input type="password" id="register-password" name="register-password" required>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="register-password">Senha</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="register-password" name="register-password" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="register-confirm-password">Confirmar Senha</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-lock input-icon"></i>
+                            <input type="password" id="register-confirm-password" name="register-confirm-password" required>
+                        </div>
+                    </div>
                 </div>
                 
-                <div class="form-group">
-                    <label for="register-confirm-password">Confirmar Senha</label>
-                    <input type="password" id="register-confirm-password" name="register-confirm-password" required>
-                </div>
-                
-                <button type="submit" class="btn btn-primary">Cadastrar</button>
+                <button type="submit" class="submit-button">
+                    <span>Criar Conta</span>
+                    <i class="fas fa-user-plus"></i>
+                </button>
             </form>
         </div>
     </div>
 
     <!-- Tela Principal - Cidadão -->
     <div id="citizen-main" class="screen hidden">
-        <div class="container">
-            <div class="main-header">
-                <h1>SOS CISP</h1>
-                <p>Comunicação de Emergência</p>
-                <div class="menu-btn" onclick="citizenLogout()">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Sair</span>
+        <div class="citizen-container">
+            <header class="citizen-header">
+                <div class="header-content">
+                    <h1>SOS CISP</h1>
+                    <p>Sistema de Emergência Inteligente</p>
                 </div>
-            </div>
-            
-            <div class="user-card">
-                <div class="user-info">
-                    <i class="fas fa-user"></i>
-                    <span id="citizen-name">Nome do Cidadão</span>
-                </div>
-            </div>
-            
-            <div class="sos-section">
-                <button id="sos-button" class="sos-button" onclick="sendSOS()">
-                    <i class="fas fa-exclamation-triangle"></i>
-                    <span>SOS</span>
-                </button>
-                <p class="sos-text">Pressione para enviar uma solicitação de emergência</p>
-            </div>
-            
-            <div class="location-section">
-                <h3>Localização Atual</h3>
-                <div id="location-display" class="location-display">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span id="location-text">Localização não disponível</span>
-                </div>
-                <button id="send-location-btn" class="btn btn-secondary" onclick="sendLocation()">
-                    <i class="fas fa-location-arrow"></i>
-                    Enviar minha localização
-                </button>
-            </div>
-            
-            <div class="quick-messages">
-                <h3>Mensagens Rápidas</h3>
-                <div class="quick-messages-grid">
-                    <button class="quick-message-btn" onclick="sendQuickMessage('Roubo')">Roubo</button>
-                    <button class="quick-message-btn" onclick="sendQuickMessage('Violência')">Violência</button>
-                    <button class="quick-message-btn" onclick="sendQuickMessage('Estou a ser perseguido')">Estou a ser perseguido</button>
-                    <button class="quick-message-btn" onclick="sendQuickMessage('Acidente')">Acidente</button>
-                    <button class="quick-message-btn" onclick="sendQuickMessage('Incêndio')">Incêndio</button>
-                    <button class="quick-message-btn" onclick="sendQuickMessage('Outro')">Outro</button>
-                </div>
-            </div>
-            
-            <div class="audio-section">
-                <h3>Gravação de Áudio</h3>
-                <button id="record-audio-btn" class="btn btn-secondary" onclick="toggleAudioRecording()">
-                    <i class="fas fa-microphone"></i>
-                    <span id="audio-btn-text">Iniciar Gravação</span>
-                </button>
-            </div>
-            
-            <div class="custom-message">
-                <h3>Mensagem Personalizada</h3>
-                <div class="message-input-container">
-                    <textarea id="custom-message-input" placeholder="Descreva sua emergência..."></textarea>
-                    <button id="send-custom-message-btn" class="btn btn-primary" onclick="sendCustomMessage()">
-                        <i class="fas fa-paper-plane"></i>
-                        Enviar
+                <div class="user-menu">
+                    <div class="user-info">
+                        <i class="fas fa-user"></i>
+                        <span id="citizen-name">Nome do Cidadão</span>
+                    </div>
+                    <button class="logout-button" onclick="citizenLogout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Sair</span>
                     </button>
                 </div>
-            </div>
-        </div>
-        
-        <!-- Menu do Cidadão -->
-        <div id="citizen-menu-overlay" class="menu-overlay hidden">
-            <div class="menu-content">
-                <div class="menu-item" onclick="showCitizenSettings()">
-                    <i class="fas fa-cog"></i>
-                    <span>Configurações</span>
+            </header>
+            
+            <main class="citizen-main">
+                <div class="sos-section">
+                    <div class="sos-container">
+                        <button id="sos-button" class="sos-button" onclick="sendSOS()">
+                            <div class="sos-icon">
+                                <i class="fas fa-exclamation-triangle"></i>
+                            </div>
+                            <span class="sos-text">SOS</span>
+                            <div class="sos-pulse"></div>
+                        </button>
+                        <p class="sos-description">Pressione para enviar uma solicitação de emergência</p>
+                    </div>
                 </div>
-                <div class="menu-item" onclick="citizenLogout()">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Sair</span>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-header">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <h3>Localização Atual</h3>
+                        </div>
+                        <div id="location-display" class="location-display">
+                            <i class="fas fa-crosshairs"></i>
+                            <span id="location-text">Localização não disponível</span>
+                        </div>
+                        <button id="send-location-btn" class="feature-button" onclick="sendLocation()">
+                            <i class="fas fa-location-arrow"></i>
+                            <span>Enviar Localização</span>
+                        </button>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-header">
+                            <i class="fas fa-comment-dots"></i>
+                            <h3>Mensagens Rápidas</h3>
+                        </div>
+                        <div class="quick-messages-grid">
+                            <button class="quick-message-btn" onclick="sendQuickMessage('Roubo')">
+                                <i class="fas fa-mask"></i>
+                                <span>Roubo</span>
+                            </button>
+                            <button class="quick-message-btn" onclick="sendQuickMessage('Violência')">
+                                <i class="fas fa-fist-raised"></i>
+                                <span>Violência</span>
+                            </button>
+                            <button class="quick-message-btn" onclick="sendQuickMessage('Estou a ser perseguido')">
+                                <i class="fas fa-running"></i>
+                                <span>Perseguição</span>
+                            </button>
+                            <button class="quick-message-btn" onclick="sendQuickMessage('Acidente')">
+                                <i class="fas fa-car-crash"></i>
+                                <span>Acidente</span>
+                            </button>
+                            <button class="quick-message-btn" onclick="sendQuickMessage('Incêndio')">
+                                <i class="fas fa-fire"></i>
+                                <span>Incêndio</span>
+                            </button>
+                            <button class="quick-message-btn" onclick="sendQuickMessage('Outro')">
+                                <i class="fas fa-ellipsis-h"></i>
+                                <span>Outro</span>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="feature-card">
+                        <div class="feature-header">
+                            <i class="fas fa-microphone"></i>
+                            <h3>Gravação de Áudio</h3>
+                        </div>
+                        <button id="record-audio-btn" class="feature-button" onclick="toggleAudioRecording()">
+                            <i class="fas fa-microphone"></i>
+                            <span id="audio-btn-text">Iniciar Gravação</span>
+                        </button>
+                        <div class="audio-status" id="audio-status"></div>
+                    </div>
+                    
+                    <div class="feature-card full-width">
+                        <div class="feature-header">
+                            <i class="fas fa-edit"></i>
+                            <h3>Mensagem Personalizada</h3>
+                        </div>
+                        <div class="message-input-container">
+                            <textarea id="custom-message-input" placeholder="Descreva sua emergência em detalhes..."></textarea>
+                            <button id="send-custom-message-btn" class="send-button" onclick="sendCustomMessage()">
+                                <i class="fas fa-paper-plane"></i>
+                                <span>Enviar</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </main>
         </div>
     </div>
 
     <!-- Painel do Administrador -->
     <div id="admin-panel" class="screen hidden">
-        <div class="container">
-            <div class="panel-header">
-                <h2>Painel Administrativo</h2>
-                <div class="admin-stats">
-                    <div class="admin-stat">
-                        <h3 id="total-users">0</h3>
-                        <p>Usuários</p>
-                    </div>
-                    <div class="admin-stat">
-                        <h3 id="total-police">0</h3>
-                        <p>Policiais</p>
-                    </div>
-                    <div class="admin-stat">
-                        <h3 id="total-citizens">0</h3>
-                        <p>Cidadãos</p>
-                    </div>
+        <div class="dashboard-container">
+            <header class="dashboard-header">
+                <div class="header-left">
+                    <h2>Painel Administrativo</h2>
+                    <p>Gerenciamento do Sistema SOS CISP</p>
                 </div>
-            </div>
+                <div class="header-right">
+                    <button class="logout-button" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Sair</span>
+                    </button>
+                </div>
+            </header>
             
-            <div class="admin-sections">
-                <div class="admin-section">
-                    <h3>Gerenciar Usuários</h3>
-                    <div id="users-list" class="users-list">
-                        <!-- Lista de usuários será carregada dinamicamente -->
+            <main class="dashboard-main">
+                <div class="admin-stats">
+                    <div class="admin-stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-users">0</h3>
+                            <p>Usuários</p>
+                        </div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-police">0</h3>
+                            <p>Policiais</p>
+                        </div>
+                    </div>
+                    <div class="admin-stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-citizens">0</h3>
+                            <p>Cidadãos</p>
+                        </div>
                     </div>
                 </div>
                 
-                <div class="admin-section">
-                    <h3>Estatísticas Gerais</h3>
-                    <div id="general-stats" class="general-stats">
-                        <!-- Estatísticas serão carregadas dinamicamente -->
+                <div class="admin-sections">
+                    <div class="admin-section">
+                        <h3>Gerenciar Usuários</h3>
+                        <div id="users-list" class="users-list">
+                            <!-- Lista de usuários será carregada dinamicamente -->
+                        </div>
+                    </div>
+                    
+                    <div class="admin-section">
+                        <h3>Estatísticas Gerais</h3>
+                        <div id="general-stats" class="general-stats">
+                            <!-- Estatísticas serão carregadas dinamicamente -->
+                        </div>
                     </div>
                 </div>
-            </div>
+            </main>
         </div>
     </div>
+
+    <!-- Sistema de Notificações -->
+    <div id="notification-container" class="notification-container"></div>
 
     <script src="assets/js/unified.js"></script>
 </body>
