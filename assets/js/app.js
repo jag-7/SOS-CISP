@@ -103,10 +103,6 @@ class SOSCISPApp {
         const filterButtons = document.querySelectorAll('.filter-button');
         filterButtons.forEach(btn => {
             btn.addEventListener('click', () => {
-                // Remove 'active' de todos os botões
-                filterButtons.forEach(b => b.classList.remove('active'));
-                // Adiciona 'active' ao botão clicado
-                btn.classList.add('active');
                 // Filtra as mensagens
                 const filter = btn.getAttribute('data-filter');
                 this.filterMessages(filter);

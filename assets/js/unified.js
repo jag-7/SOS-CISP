@@ -11,7 +11,7 @@ class SOSCISPApp {
         this.audioRecorder = null;
         this.isRecording = false;
         this.screenHistory = [];
-        
+
         // Dados locais
         this.localStorage = {
             users: this.loadFromStorage('users') || {
@@ -35,10 +35,10 @@ class SOSCISPApp {
                 }
             }
         };
-        
+
         this.init();
     }
-    
+
     // Funções de armazenamento local
     saveToStorage(key, data) {
         try {
@@ -60,7 +60,7 @@ class SOSCISPApp {
             }
         }
     }
-    
+
     loadFromStorage(key) {
         try {
             const data = localStorage.getItem(key);
@@ -72,7 +72,7 @@ class SOSCISPApp {
             return null;
         }
     }
-    
+
     // Função para adicionar mensagem
     addMessage(message) {
         console.log('=== ADICIONANDO MENSAGEM ===');
@@ -81,7 +81,7 @@ class SOSCISPApp {
         if (message.audioData) {
             console.log('Tamanho do audioData:', message.audioData.length);
         }
-        
+
         const newMessage = {
             id: Date.now().toString(),
             sender_id: message.sender_id,
@@ -95,55 +95,55 @@ class SOSCISPApp {
             timestamp: new Date().toISOString(),
             status: 'pending'
         };
-        
+
         console.log('Nova mensagem criada:', newMessage);
-        
+
         this.localStorage.messages.push(newMessage);
         this.localStorage.stats.total_messages++;
-        
+
         if (this.localStorage.stats.messages_by_type[message.message_type]) {
             this.localStorage.stats.messages_by_type[message.message_type]++;
         }
-        
+
         console.log('Total de mensagens:', this.localStorage.messages.length);
         console.log('Salvando mensagens no localStorage...');
-        
+
         this.saveToStorage('messages', this.localStorage.messages);
         this.saveToStorage('stats', this.localStorage.stats);
-        
+
         return newMessage;
     }
-    
+
     // Função para buscar usuário
     findUser(id, type) {
         const users = type === 'police' ? this.localStorage.users.police : this.localStorage.users.citizens;
         return users.find(user => user.id === id);
     }
-    
+
     // Função para verificar credenciais
     verifyCredentials(id, password, type) {
         const user = this.findUser(id, type);
         if (!user) return false;
-        
+
         if (type === 'police') {
             return user.code === password;
         } else {
             return user.password === password;
         }
     }
-    
+
     init() {
         console.log('Inicializando SOS CISP...');
-        
+
         // Verificar se todos os elementos necessários estão presentes
         this.checkRequiredElements();
-        
+
         this.setupEventListeners();
         this.startSplashScreen();
-        
+
         console.log('SOS CISP inicializado com sucesso');
     }
-    
+
     checkRequiredElements() {
         const requiredScreens = [
             'splash-screen',
@@ -155,7 +155,7 @@ class SOSCISPApp {
             'citizen-main',
             'admin-panel'
         ];
-        
+
         console.log('Verificando elementos necessários...');
         requiredScreens.forEach(screenId => {
             const element = document.getElementById(screenId);
@@ -166,7 +166,7 @@ class SOSCISPApp {
             }
         });
     }
-    
+
     setupEventListeners() {
         // Cards de acesso
         document.querySelectorAll('.access-card').forEach(card => {
@@ -175,26 +175,26 @@ class SOSCISPApp {
                 this.handleAccessSelection(accessType);
             });
         });
-        
+
         // Formulários
         this.setupFormListeners();
-        
+
         // Filtros de mensagens
         this.setupFilterListeners();
-        
+
         // Botões de menu
         this.setupMenuListeners();
-        
+
         // Botões de ação
         this.setupActionListeners();
-        
+
         // Fechar menus ao clicar fora
         document.addEventListener('click', (e) => {
             if (!e.target.closest('.menu-content') && !e.target.closest('.menu-btn')) {
                 this.closeAllMenus();
             }
         });
-        
+
         // Fechar menus com ESC
         document.addEventListener('keydown', (e) => {
             if (e.key === 'Escape') {
@@ -202,7 +202,7 @@ class SOSCISPApp {
             }
         });
     }
-    
+
     setupFormListeners() {
         // Login Polícia
         const policeLoginForm = document.getElementById('police-login-form');
@@ -212,7 +212,7 @@ class SOSCISPApp {
                 this.handlePoliceLogin();
             });
         }
-        
+
         // Login Cidadão
         const citizenLoginForm = document.getElementById('citizen-login-form');
         if (citizenLoginForm) {
@@ -221,7 +221,7 @@ class SOSCISPApp {
                 this.handleCitizenLogin();
             });
         }
-        
+
         // Cadastro Cidadão
         const citizenRegisterForm = document.getElementById('citizen-register-form');
         if (citizenRegisterForm) {
@@ -231,16 +231,16 @@ class SOSCISPApp {
             });
         }
     }
-    
+
     setupFilterListeners() {
-        document.querySelectorAll('.filter-btn').forEach(btn => {
+        document.querySelectorAll('.filter-button').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 const filter = e.currentTarget.dataset.filter;
                 this.filterMessages(filter);
             });
         });
     }
-    
+
     setupMenuListeners() {
         // Menu policial
         const menuBtn = document.querySelector('.menu-btn');
@@ -250,7 +250,7 @@ class SOSCISPApp {
                 this.toggleMenu();
             });
         }
-        
+
         // Menu cidadão
         const citizenMenuBtn = document.querySelector('#citizen-main .menu-btn');
         if (citizenMenuBtn) {
@@ -260,36 +260,36 @@ class SOSCISPApp {
             });
         }
     }
-    
+
     setupActionListeners() {
         // Botão SOS
         const sosButton = document.getElementById('sos-button');
         if (sosButton) {
             sosButton.addEventListener('click', () => this.sendSOS());
         }
-        
+
         // Botão de localização
         const locationBtn = document.getElementById('send-location-btn');
         if (locationBtn) {
             locationBtn.addEventListener('click', () => this.sendLocation());
         }
-        
+
         // Botão de gravação de áudio
         const audioBtn = document.getElementById('record-audio-btn');
         if (audioBtn) {
             audioBtn.addEventListener('click', () => this.toggleAudioRecording());
         }
-        
+
         // Botão de mensagem personalizada
         const customMessageBtn = document.getElementById('send-custom-message-btn');
         if (customMessageBtn) {
             customMessageBtn.addEventListener('click', () => this.sendCustomMessage());
         }
     }
-    
+
     startSplashScreen() {
         console.log('=== INICIANDO SPLASH SCREEN ===');
-        
+
         // Verificar se a splash screen está visível
         const splashScreen = document.getElementById('splash-screen');
         if (!splashScreen) {
@@ -297,27 +297,27 @@ class SOSCISPApp {
             this.showScreen('access-selection');
             return;
         }
-        
+
         console.log('Splash screen encontrada, exibindo...');
-        
+
         // Garantir que a splash screen está visível
         splashScreen.style.display = 'flex';
         splashScreen.classList.remove('hidden');
-        
+
         // Ocultar outras telas
         const allScreens = document.querySelectorAll('.screen');
         allScreens.forEach(screen => {
             screen.classList.add('hidden');
         });
-        
+
         console.log('Splash screen exibida, iniciando timer de 3 segundos...');
-        
+
         // Simular carregamento de dados por 3 segundos
         setTimeout(() => {
             console.log('Timer concluído, navegando para seleção de acesso');
             this.showScreen('access-selection');
         }, 3000);
-        
+
         // Fallback: se após 5 segundos ainda estiver na splash, forçar navegação
         setTimeout(() => {
             if (this.currentScreen === 'splash-screen') {
@@ -326,10 +326,10 @@ class SOSCISPApp {
             }
         }, 5000);
     }
-    
+
     async handleAccessSelection(accessType) {
         this.userType = accessType;
-        
+
         switch (accessType) {
             case 'police':
                 this.showScreen('police-login');
@@ -341,16 +341,16 @@ class SOSCISPApp {
                 console.error('Tipo de acesso inválido:', accessType);
         }
     }
-    
+
     async handlePoliceLogin() {
         const policeId = document.getElementById('police-id').value;
         const policeCode = document.getElementById('police-code').value;
-        
+
         if (!policeId || !policeCode) {
             this.showError('Por favor, preencha todos os campos');
             return;
         }
-        
+
         // Verificar credenciais localmente
         if (this.verifyCredentials(policeId, policeCode, 'police')) {
             const user = this.findUser(policeId, 'police');
@@ -366,16 +366,16 @@ class SOSCISPApp {
             this.showError('ID ou código inválido');
         }
     }
-    
+
     async handleCitizenLogin() {
         const bi = document.getElementById('citizen-bi').value;
         const password = document.getElementById('citizen-password').value;
-        
+
         if (!bi || !password) {
             this.showError('Por favor, preencha todos os campos');
             return;
         }
-        
+
         // Verificar credenciais localmente
         if (this.verifyCredentials(bi, password, 'citizen')) {
             const user = this.findUser(bi, 'citizen');
@@ -391,24 +391,24 @@ class SOSCISPApp {
             this.showError('BI ou senha inválidos');
         }
     }
-    
+
     async handleCitizenRegister() {
         const formData = new FormData(document.getElementById('citizen-register-form'));
         const data = Object.fromEntries(formData);
-        
+
         // Validação básica
         if (data['register-password'] !== data['register-confirm-password']) {
             this.showError('As senhas não coincidem');
             return;
         }
-        
+
         // Verificar se o BI já existe
         const existingUser = this.findUser(data['register-bi'], 'citizen');
         if (existingUser) {
             this.showError('BI já cadastrado');
             return;
         }
-        
+
         // Adicionar novo usuário
         const newUser = {
             id: data['register-bi'],
@@ -419,24 +419,24 @@ class SOSCISPApp {
             address: data['register-address'],
             type: 'citizen'
         };
-        
+
         this.localStorage.users.citizens.push(newUser);
         this.saveToStorage('users', this.localStorage.users);
-        
+
         this.clearCitizenRegisterForm();
         this.showSuccess('Cadastro realizado com sucesso! Você pode fazer login agora.');
         setTimeout(() => {
             this.showScreen('citizen-login');
         }, 2000);
     }
-    
+
     clearCitizenRegisterForm() {
         const form = document.getElementById('citizen-register-form');
         if (form) {
             form.reset();
         }
     }
-    
+
     async loadPolicePanel() {
         try {
             // Atualizar estatísticas
@@ -444,42 +444,42 @@ class SOSCISPApp {
             document.getElementById('messages-count').textContent = stats.total_messages;
             document.getElementById('emergencies-count').textContent = stats.messages_by_type.sos || 0;
             document.getElementById('network-status').textContent = 'Online';
-            
+
             // Atualizar nome do usuário
             document.getElementById('police-name').textContent = this.currentUser.name;
-            
+
             // Carregar mensagens
             await this.loadMessages();
-            
+
         } catch (error) {
             console.error('Erro ao carregar painel policial:', error);
             this.showError('Erro ao carregar dados');
         }
     }
-    
+
     loadCitizenMain() {
         // Atualizar nome do usuário
         document.getElementById('citizen-name').textContent = this.currentUser.name;
-        
+
         // Solicitar permissão de localização
         this.requestLocationPermission();
     }
-    
+
     async loadMessages(filter = 'all') {
         const messagesList = document.getElementById('messages-list');
         if (!messagesList) return;
-        
+
         try {
             console.log('=== CARREGANDO MENSAGENS ===');
             let messages = this.localStorage.messages;
             console.log('Total de mensagens carregadas:', messages.length);
-            
+
             // Aplicar filtro
             if (filter !== 'all') {
                 messages = messages.filter(msg => msg.message_type === filter);
                 console.log(`Mensagens após filtro '${filter}':`, messages.length);
             }
-            
+
             // Verificar mensagens de áudio
             const audioMessages = messages.filter(msg => msg.message_type === 'audio');
             console.log('Mensagens de áudio encontradas:', audioMessages.length);
@@ -490,21 +490,21 @@ class SOSCISPApp {
                     tamanhoAudioData: msg.audioData ? msg.audioData.length : 0
                 });
             });
-            
+
             // Ordenar por timestamp (mais recentes primeiro)
             messages.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-            
+
             if (messages.length > 0) {
                 messagesList.innerHTML = messages.map(message => {
                     // Preparar dados para o HTML
-                    const audioButton = message.message_type === 'audio' ? 
+                    const audioButton = message.message_type === 'audio' ?
                         `<br><button onclick="window.sosCISPApp.playAudioMessage('${message.audioData || ''}')" style="background: var(--accent-color); color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; margin-top: 5px; font-size: 12px;">
                             <i class="fas fa-play"></i> Reproduzir Áudio
                         </button>` : '';
-                    
-                    const locationLink = message.latitude && message.longitude ? 
+
+                    const locationLink = message.latitude && message.longitude ?
                         `<br><small>📍 <a href="https://www.google.com/maps?q=${message.latitude},${message.longitude}" target="_blank" style="color: var(--accent-color); text-decoration: none; font-weight: bold;">Abrir no Google Maps: ${message.latitude.toFixed(6)}, ${message.longitude.toFixed(6)}</a></small>` : '';
-                    
+
                     return `
                         <div class="message-item">
                             <div class="message-header">
@@ -537,7 +537,7 @@ class SOSCISPApp {
             messagesList.innerHTML = '<p class="error-message">Erro ao carregar mensagens</p>';
         }
     }
-    
+
     getMessageTypeIcon(type) {
         const icons = {
             text: '<i class="fas fa-comment"></i>',
@@ -547,49 +547,49 @@ class SOSCISPApp {
         };
         return icons[type] || '<i class="fas fa-question"></i>';
     }
-    
+
     playAudioMessage(audioData) {
         console.log('=== REPRODUZINDO ÁUDIO ===');
         console.log('Tamanho do audioData recebido:', audioData ? audioData.length : 'null');
         console.log('Primeiros 100 caracteres:', audioData ? audioData.substring(0, 100) : 'null');
-        
+
         if (!audioData) {
             console.error('audioData é null ou undefined');
             this.showError('Dados de áudio não disponíveis (null)');
             return;
         }
-        
+
         if (audioData.length < 50) {
             console.error('audioData muito pequeno:', audioData.length, 'caracteres');
             this.showError('Dados de áudio muito pequenos ou inválidos');
             return;
         }
-        
+
         try {
             const audio = new Audio(audioData);
             console.log('Elemento de áudio criado com sucesso');
-            
+
             // Adicionar eventos para melhor feedback
             audio.addEventListener('loadstart', () => {
                 console.log('Carregando áudio...');
                 this.showNotification('Carregando áudio...', 'info');
             });
-            
+
             audio.addEventListener('canplay', () => {
                 console.log('Áudio pronto para reprodução');
             });
-            
+
             audio.addEventListener('ended', () => {
                 console.log('Áudio finalizado');
                 this.showNotification('Áudio finalizado', 'success');
             });
-            
+
             audio.addEventListener('error', (e) => {
                 console.error('Erro no elemento de áudio:', e);
                 console.error('Código de erro:', audio.error ? audio.error.code : 'desconhecido');
                 this.showError('Erro ao reproduzir áudio: ' + (audio.error ? audio.error.message : 'erro desconhecido'));
             });
-            
+
             audio.play().then(() => {
                 console.log('Áudio iniciado com sucesso');
                 this.showNotification('Reproduzindo áudio...', 'success');
@@ -602,7 +602,7 @@ class SOSCISPApp {
             this.showError(`Erro ao reproduzir áudio: ${error.message}`);
         }
     }
-    
+
     getStatusText(status) {
         const statusTexts = {
             pending: 'Pendente',
@@ -611,32 +611,32 @@ class SOSCISPApp {
         };
         return statusTexts[status] || 'Desconhecido';
     }
-    
+
     formatTime(timestamp) {
         const now = new Date();
         const diff = now - timestamp;
         const minutes = Math.floor(diff / 60000);
-        
+
         if (minutes < 1) return 'Agora';
         if (minutes < 60) return `${minutes} min atrás`;
-        
+
         const hours = Math.floor(minutes / 60);
         if (hours < 24) return `${hours}h atrás`;
-        
+
         return timestamp.toLocaleDateString('pt-BR');
     }
-    
+
     async filterMessages(filter) {
         // Atualizar botões ativos
         document.querySelectorAll('.filter-button').forEach(btn => {
             btn.classList.remove('active');
         });
         document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
-        
+
         // Carregar mensagens filtradas
         await this.loadMessages(filter);
     }
-    
+
     async requestLocationPermission() {
         if ('geolocation' in navigator) {
             try {
@@ -654,7 +654,7 @@ class SOSCISPApp {
             this.showError('Geolocalização não suportada');
         }
     }
-    
+
     getCurrentPosition() {
         return new Promise((resolve, reject) => {
             navigator.geolocation.getCurrentPosition(resolve, reject, {
@@ -664,20 +664,20 @@ class SOSCISPApp {
             });
         });
     }
-    
+
     updateLocationDisplay() {
         const locationText = document.getElementById('location-text');
         if (locationText && this.locationData) {
             locationText.textContent = `${this.locationData.lat.toFixed(6)}, ${this.locationData.lng.toFixed(6)}`;
         }
     }
-    
+
     async sendSOS() {
         if (!this.locationData) {
             this.showError('Localização não disponível');
             return;
         }
-        
+
         try {
             const message = {
                 sender_id: this.currentUser.id,
@@ -688,21 +688,21 @@ class SOSCISPApp {
                 latitude: this.locationData.lat,
                 longitude: this.locationData.lng
             };
-            
+
             this.addMessage(message);
             this.showSuccess('SOS enviado com sucesso!');
-            
+
             // Atualizar painel policial se estiver ativo
             if (this.currentScreen === 'police-panel') {
                 this.loadPolicePanel();
             }
-            
+
         } catch (error) {
             console.error('Erro ao enviar SOS:', error);
             this.showError('Erro ao enviar SOS');
         }
     }
-    
+
     async sendLocation() {
         try {
             const position = await this.getCurrentPosition();
@@ -710,9 +710,9 @@ class SOSCISPApp {
                 lat: position.coords.latitude,
                 lng: position.coords.longitude
             };
-            
+
             this.updateLocationDisplay();
-            
+
             const message = {
                 sender_id: this.currentUser.id,
                 sender_type: this.currentUser.type,
@@ -722,27 +722,27 @@ class SOSCISPApp {
                 latitude: this.locationData.lat,
                 longitude: this.locationData.lng
             };
-            
+
             this.addMessage(message);
             this.showSuccess('Localização enviada com sucesso!');
-            
+
             // Atualizar painel policial se estiver ativo
             if (this.currentScreen === 'police-panel') {
                 this.loadPolicePanel();
             }
-            
+
         } catch (error) {
             console.error('Erro ao enviar localização:', error);
             this.showError('Erro ao enviar localização');
         }
     }
-    
+
     async sendQuickMessage(message) {
         if (!this.locationData) {
             this.showError('Localização não disponível');
             return;
         }
-        
+
         try {
             const messageData = {
                 sender_id: this.currentUser.id,
@@ -753,21 +753,21 @@ class SOSCISPApp {
                 latitude: this.locationData.lat,
                 longitude: this.locationData.lng
             };
-            
+
             this.addMessage(messageData);
             this.showSuccess(`Mensagem "${message}" enviada com sucesso!`);
-            
+
             // Atualizar painel policial se estiver ativo
             if (this.currentScreen === 'police-panel') {
                 this.loadPolicePanel();
             }
-            
+
         } catch (error) {
             console.error('Erro ao enviar mensagem:', error);
             this.showError('Erro de conexão. Tente novamente.');
         }
     }
-    
+
     async toggleAudioRecording() {
         if (!this.isRecording) {
             await this.startAudioRecording();
@@ -775,29 +775,29 @@ class SOSCISPApp {
             await this.stopAudioRecording();
         }
     }
-    
+
     async startAudioRecording() {
         try {
             console.log('=== INICIANDO GRAVAÇÃO DE ÁUDIO ===');
-            
+
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             console.log('Stream de áudio obtido:', stream);
-            
+
             this.audioRecorder = new MediaRecorder(stream);
             const chunks = [];
-            
+
             this.audioRecorder.ondataavailable = (e) => {
                 console.log('Chunk de áudio recebido:', e.data.size, 'bytes');
                 chunks.push(e.data);
             };
-            
+
             this.audioRecorder.onstop = () => {
                 console.log('Gravação finalizada, processando chunks...');
                 console.log('Total de chunks:', chunks.length);
-                
+
                 const blob = new Blob(chunks, { type: 'audio/wav' });
                 console.log('Blob criado:', blob.size, 'bytes, tipo:', blob.type);
-                
+
                 if (blob.size > 0) {
                     this.sendAudioMessage(blob);
                 } else {
@@ -805,61 +805,61 @@ class SOSCISPApp {
                     this.showError('Erro: gravação de áudio falhou');
                 }
             };
-            
+
             this.audioRecorder.onerror = (event) => {
                 console.error('Erro na gravação:', event);
                 this.showError('Erro durante a gravação de áudio');
             };
-            
+
             this.audioRecorder.start(1000); // Capturar chunks a cada 1 segundo
             this.isRecording = true;
-            
+
             document.getElementById('audio-btn-text').textContent = 'Parar Gravação';
             document.getElementById('record-audio-btn').classList.add('recording');
-            
+
             console.log('Gravação iniciada com sucesso');
-            
+
         } catch (error) {
             console.error('Erro ao iniciar gravação de áudio:', error);
             this.showError('Erro ao iniciar gravação de áudio: ' + error.message);
         }
     }
-    
+
     async stopAudioRecording() {
         if (this.audioRecorder && this.isRecording) {
             this.audioRecorder.stop();
             this.audioRecorder.stream.getTracks().forEach(track => track.stop());
-            
+
             this.isRecording = false;
             document.getElementById('audio-btn-text').textContent = 'Iniciar Gravação';
             document.getElementById('record-audio-btn').classList.remove('recording');
         }
     }
-    
+
     async sendAudioMessage(audioBlob) {
         try {
             console.log('=== INICIANDO ENVIO DE ÁUDIO ===');
             console.log('Tamanho do blob:', audioBlob.size);
             console.log('Tipo do blob:', audioBlob.type);
-            
+
             if (!audioBlob || audioBlob.size === 0) {
                 console.error('Blob de áudio inválido ou vazio');
                 this.showError('Erro: áudio não foi gravado corretamente');
                 return;
             }
-            
+
             // Convert audio blob to base64 for storage
             const reader = new FileReader();
             reader.onload = () => {
                 const audioData = reader.result;
                 console.log('Áudio convertido para base64, tamanho:', audioData.length);
-                
+
                 if (!audioData || audioData.length < 100) {
                     console.error('Dados de áudio convertidos são inválidos');
                     this.showError('Erro: falha na conversão do áudio');
                     return;
                 }
-                
+
                 const message = {
                     sender_id: this.currentUser.id,
                     sender_type: this.currentUser.type,
@@ -870,46 +870,46 @@ class SOSCISPApp {
                     latitude: this.locationData?.lat || null,
                     longitude: this.locationData?.lng || null
                 };
-                
+
                 console.log('Mensagem criada:', message);
                 console.log('Tamanho do audioData na mensagem:', message.audioData.length);
-                
+
                 this.addMessage(message);
                 this.showSuccess('Áudio enviado com sucesso!');
-                
+
                 // Atualizar painel policial se estiver ativo
                 if (this.currentScreen === 'police-panel') {
                     this.loadPolicePanel();
                 }
             };
-            
+
             reader.onerror = (error) => {
                 console.error('Erro na conversão do áudio:', error);
                 this.showError('Erro ao processar áudio');
             };
-            
+
             reader.readAsDataURL(audioBlob);
-            
+
         } catch (error) {
             console.error('Erro ao enviar áudio:', error);
             this.showError('Erro ao enviar áudio');
         }
     }
-    
+
     async sendCustomMessage() {
         const messageInput = document.getElementById('custom-message-input');
         const message = messageInput.value.trim();
-        
+
         if (!message) {
             this.showError('Por favor, digite uma mensagem');
             return;
         }
-        
+
         if (!this.locationData) {
             this.showError('Localização não disponível');
             return;
         }
-        
+
         try {
             const messageData = {
                 sender_id: this.currentUser.id,
@@ -920,52 +920,52 @@ class SOSCISPApp {
                 latitude: this.locationData.lat,
                 longitude: this.locationData.lng
             };
-            
+
             this.addMessage(messageData);
             this.showSuccess('Mensagem enviada com sucesso!');
             messageInput.value = '';
-            
+
             // Atualizar painel policial se estiver ativo
             if (this.currentScreen === 'police-panel') {
                 this.loadPolicePanel();
             }
-            
+
         } catch (error) {
             console.error('Erro ao enviar mensagem:', error);
             this.showError('Erro de conexão. Tente novamente.');
         }
     }
-    
+
     toggleMenu() {
         const menuOverlay = document.getElementById('menu-overlay');
         if (menuOverlay) {
             menuOverlay.classList.toggle('hidden');
         }
     }
-    
+
     toggleCitizenMenu() {
         const menuOverlay = document.getElementById('citizen-menu-overlay');
         if (menuOverlay) {
             menuOverlay.classList.toggle('hidden');
         }
     }
-    
+
     closeAllMenus() {
         document.querySelectorAll('.menu-overlay').forEach(menu => {
             menu.classList.add('hidden');
         });
     }
-    
+
     showSettings() {
         this.toggleMenu();
         this.showError('Funcionalidade em desenvolvimento');
     }
-    
+
     showCitizenSettings() {
         this.toggleCitizenMenu();
         this.showError('Funcionalidade em desenvolvimento');
     }
-    
+
     logout() {
         this.isAuthenticated = false;
         this.currentUser = null;
@@ -973,7 +973,7 @@ class SOSCISPApp {
         this.toggleMenu();
         this.showScreen('access-selection');
     }
-    
+
     citizenLogout() {
         this.isAuthenticated = false;
         this.currentUser = null;
@@ -981,10 +981,10 @@ class SOSCISPApp {
         this.toggleCitizenMenu();
         this.showScreen('access-selection');
     }
-    
+
     showScreen(screenId) {
         console.log(`=== NAVEGANDO PARA: ${screenId} ===`);
-        
+
         // Ocultar splash screen primeiro
         const splashScreen = document.getElementById('splash-screen');
         if (splashScreen) {
@@ -992,16 +992,16 @@ class SOSCISPApp {
             splashScreen.classList.add('hidden');
             console.log('Splash screen ocultada');
         }
-        
+
         // Ocultar todas as telas
         const allScreens = document.querySelectorAll('.screen');
         console.log(`Encontradas ${allScreens.length} telas para ocultar`);
-        
+
         allScreens.forEach(screen => {
             screen.classList.add('hidden');
             screen.style.display = 'none';
         });
-        
+
         // Mostrar tela selecionada
         const targetScreen = document.getElementById(screenId);
         if (targetScreen) {
@@ -1009,17 +1009,17 @@ class SOSCISPApp {
             targetScreen.style.display = 'block';
             this.currentScreen = screenId;
             console.log(`Tela ${screenId} exibida com sucesso`);
-            
+
             // Adicionar à história se não for a mesma tela
             if (this.screenHistory[this.screenHistory.length - 1] !== screenId) {
                 this.screenHistory.push(screenId);
             }
-            
+
             // Limitar histórico a 10 telas
             if (this.screenHistory.length > 10) {
                 this.screenHistory.shift();
             }
-            
+
             // Executar ações específicas da tela
             this.handleScreenLoad(screenId);
         } else {
@@ -1034,7 +1034,7 @@ class SOSCISPApp {
             }
         }
     }
-    
+
     goBack() {
         if (this.screenHistory.length > 1) {
             this.screenHistory.pop(); // Remove tela atual
@@ -1044,7 +1044,7 @@ class SOSCISPApp {
             this.showScreen('access-selection');
         }
     }
-    
+
     handleScreenLoad(screenId) {
         switch (screenId) {
             case 'access-selection':
@@ -1061,15 +1061,15 @@ class SOSCISPApp {
                 break;
         }
     }
-    
+
     showSuccess(message) {
         this.showNotification(message, 'success');
     }
-    
+
     showError(message) {
         this.showNotification(message, 'error');
     }
-    
+
     showNotification(message, type) {
         // Criar notificação
         const notification = document.createElement('div');
@@ -1080,7 +1080,7 @@ class SOSCISPApp {
                 <span>${message}</span>
             </div>
         `;
-        
+
         // Adicionar ao container de notificações
         const container = document.getElementById('notification-container');
         if (container) {
@@ -1088,12 +1088,12 @@ class SOSCISPApp {
         } else {
             document.body.appendChild(notification);
         }
-        
+
         // Mostrar notificação
         setTimeout(() => {
             notification.classList.add('show');
         }, 100);
-        
+
         // Remover após 5 segundos
         setTimeout(() => {
             notification.classList.remove('show');
@@ -1104,7 +1104,7 @@ class SOSCISPApp {
             }, 300);
         }, 5000);
     }
-    
+
     refreshData() {
         if (this.currentScreen === 'police-panel') {
             this.loadPolicePanel();
@@ -1114,15 +1114,15 @@ class SOSCISPApp {
             this.showSuccess('Dados administrativos atualizados');
         }
     }
-    
+
     showSettings() {
         this.showNotification('Configurações em desenvolvimento', 'info');
     }
-    
+
     showCitizenSettings() {
         this.showNotification('Configurações do cidadão em desenvolvimento', 'info');
     }
-    
+
     showNotification(message, type) {
         // Criar notificação
         const notification = document.createElement('div');
@@ -1133,7 +1133,7 @@ class SOSCISPApp {
                 <span>${message}</span>
             </div>
         `;
-        
+
         // Adicionar ao container de notificações
         const container = document.getElementById('notification-container');
         if (container) {
@@ -1141,12 +1141,12 @@ class SOSCISPApp {
         } else {
             document.body.appendChild(notification);
         }
-        
+
         // Mostrar notificação
         setTimeout(() => {
             notification.classList.add('show');
         }, 100);
-        
+
         // Remover após 3 segundos
         setTimeout(() => {
             notification.classList.remove('show');
@@ -1159,12 +1159,12 @@ class SOSCISPApp {
             }, 300);
         }, 3000);
     }
-    
+
     async loadAdminData() {
         try {
             const stats = this.localStorage.stats;
             const users = this.localStorage.users;
-            
+
             document.getElementById('total-users').textContent = users.police.length + users.citizens.length;
             document.getElementById('total-police').textContent = users.police.length;
             document.getElementById('total-citizens').textContent = users.citizens.length;
@@ -1177,7 +1177,7 @@ class SOSCISPApp {
 // Inicializar aplicação quando o DOM estiver carregado
 document.addEventListener('DOMContentLoaded', () => {
     console.log('DOM carregado, iniciando SOS CISP...');
-    
+
     // Aguardar um pouco mais para garantir que todos os recursos estejam carregados
     setTimeout(() => {
         try {
@@ -1205,12 +1205,12 @@ window.showScreen = (screenId) => {
         if (splashScreen) {
             splashScreen.style.display = 'none';
         }
-        
+
         const allScreens = document.querySelectorAll('.screen');
         allScreens.forEach(screen => {
             screen.classList.add('hidden');
         });
-        
+
         const targetScreen = document.getElementById(screenId);
         if (targetScreen) {
             targetScreen.classList.remove('hidden');
@@ -1304,12 +1304,12 @@ window.skipSplash = () => {
             splashScreen.style.display = 'none';
             console.log('Splash screen ocultada via fallback');
         }
-        
+
         const allScreens = document.querySelectorAll('.screen');
         allScreens.forEach(screen => {
             screen.classList.add('hidden');
         });
-        
+
         const accessScreen = document.getElementById('access-selection');
         if (accessScreen) {
             accessScreen.classList.remove('hidden');
