@@ -5,11 +5,11 @@
     /* Cores Principais */
     --primary-color: #1a1a2e;
     --secondary-color: #16213e;
-    --accent-color: #00d4aa;
+    --accent-color: #f00000;
     --accent-light: #000;
     
     /* Cores de Status */
-    --success-color: #00d4aa;
+    --success-color: #f00000;
     --warning-color: #ffa726;
     --danger-color: #ff4757;
     --info-color: #3742fa;
@@ -25,18 +25,18 @@
     --text-primary: #ffffff;
     --text-secondary: #b8b8b8;
     --text-muted: #8a8a8a;
-    --text-accent: #00d4aa;
+    --text-accent: #f00000;
     
     /* Cores de Borda */
     --border-primary: rgba(255, 255, 255, 0.1);
     --border-secondary: rgba(255, 255, 255, 0.2);
-    --border-accent: rgba(0, 212, 170, 0.3);
+    --border-accent: rgba(122, 21, 21, 0.3);
     
     /* Sombras */
-    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.1);
+    --shadow-sm: 0 2px 8px rgba(151, 23, 23, 0.1);
     --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.15);
     --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.2);
-    --shadow-glow: 0 0 20px rgba(0, 212, 170, 0.3);
+    --shadow-glow: 0 0 20px rgba(114, 13, 13, 0.3);
     
     /* Bordas */
     --radius-sm: 8px;
@@ -51,11 +51,11 @@
     --transition-slow: all 0.5s ease;
     
     /* Gradientes */
-    --gradient-primary: linear-gradient(135deg, #00d4aa 0%, #00b894 100%);
-    --gradient-secondary: linear-gradient(135deg, #00d4aa 0%, #00b894 100%);
-    --gradient-accent: linear-gradient(135deg, #00d4aa 0%, #00b894 100%);
-    --gradient-danger: linear-gradient(135deg, #f00000 0%, #dd5524 100%);
-    --gradient-success: linear-gradient(135deg, #00d4aa 0%, #00b894 100%);
+    --gradient-primary: linear-gradient(135deg, #c91616 0%, #8d1b19 100%);
+    --gradient-secondary: linear-gradient(135deg, #c91616 0%, #8d1b19 100%);
+    --gradient-accent: linear-gradient(135deg, #c91616 0%, #8d1b19 100%);
+    --gradient-danger: linear-gradient(135deg, #f00000 0%, #f00000 100%);
+    --gradient-success: linear-gradient(135deg, #c91616 0%, #8d1b19 100%);
     
     /* Espaçamentos */
     --spacing-xs: 0.25rem;
@@ -122,9 +122,7 @@ body::before {
     width: 100%;
     height: 100%;
     background: 
-        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
-        radial-gradient(circle at 40% 40%, rgba(120, 219, 255, 0.2) 0%, transparent 50%);
+     #ffffff;
     pointer-events: none;
     z-index: -1;
 }
@@ -637,11 +635,11 @@ body::before {
 }
 
 .police-card:hover {
-    box-shadow: 0 8px 32px rgba(52, 152, 219, 0.3);
+    box-shadow: 0 8px 32px rgba(255, 0, 0, 0.3);
 }
 
 .citizen-card:hover {
-    box-shadow: 0 8px 32px rgba(0, 212, 170, 0.3);
+    box-shadow: 0 8px 32px rgba(255, 0, 0, 0.3);
 }
 
 .card-header {
@@ -2059,8 +2057,8 @@ body::before {
     }
     
     .container {
-        margin: var(--spacing-sm);
-        padding: var(--spacing-md);
+        margin: 0 px;
+        padding: 0 px;
     }
     
     .quick-messages-grid {

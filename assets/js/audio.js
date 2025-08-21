@@ -480,6 +480,15 @@ let audioManager;
 
 document.addEventListener('DOMContentLoaded', () => {
     audioManager = new AudioManager();
+    
+    const recordBtn = document.getElementById('record-audio-btn');
+    recordBtn.addEventListener('click', () => {
+        if (audioManager.isRecording) {
+            stopAudioRecording();
+        } else {
+            startAudioRecording();
+        }
+    });
 });
 
 // Funções globais para áudio
@@ -492,6 +501,16 @@ window.startAudioRecording = async () => {
 window.stopAudioRecording = () => {
     if (audioManager) {
         return audioManager.stopRecording();
+    }
+};
+
+window.toggleAudioRecording = () => {
+    if (audioManager) {
+        if (audioManager.isRecording) {
+            audioManager.stopRecording();
+        } else {
+            audioManager.startRecording();
+        }
     }
 };
 
@@ -517,4 +536,17 @@ window.sendAudioForEmergency = async () => {
     if (audioManager) {
         return await audioManager.sendAudioForEmergency();
     }
-}; 
+};
+
+async function enviarAudio() {
+    try {
+        const result = await sendAudioForEmergency();
+        if (result.success) {
+            audioManager.showAudioSuccess(result.message);
+        } else {
+            audioManager.showAudioError('Falha ao enviar áudio');
+        }
+    } catch (e) {
+        audioManager.showAudioError('Erro ao enviar áudio');
+    }
+}

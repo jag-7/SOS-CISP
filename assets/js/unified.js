@@ -628,7 +628,7 @@ class SOSCISPApp {
     
     async filterMessages(filter) {
         // Atualizar botões ativos
-        document.querySelectorAll('.filter-btn').forEach(btn => {
+        document.querySelectorAll('.filter-button').forEach(btn => {
             btn.classList.remove('active');
         });
         document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
@@ -1337,4 +1337,4 @@ window.showCitizenSettings = () => {
     if (window.sosCISPApp) {
         window.sosCISPApp.showCitizenSettings();
     }
-}; 
+};

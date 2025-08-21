@@ -100,9 +100,15 @@ class SOSCISPApp {
     }
     
     setupFilterListeners() {
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', (e) => {
-                const filter = e.currentTarget.dataset.filter;
+        const filterButtons = document.querySelectorAll('.filter-button');
+        filterButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                // Remove 'active' de todos os botões
+                filterButtons.forEach(b => b.classList.remove('active'));
+                // Adiciona 'active' ao botão clicado
+                btn.classList.add('active');
+                // Filtra as mensagens
+                const filter = btn.getAttribute('data-filter');
                 this.filterMessages(filter);
             });
         });
@@ -319,13 +325,21 @@ class SOSCISPApp {
     loadMessages(filter = 'all') {
         const messagesList = document.getElementById('messages-list');
         if (!messagesList) return;
-        
+
+        // Atualiza botão ativo do filtro
+        document.querySelectorAll('.filter-button').forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('data-filter') === filter) {
+                btn.classList.add('active');
+            }
+        });
+
         let filteredMessages = this.mockMessages;
-        
+
         if (filter !== 'all') {
             filteredMessages = this.mockMessages.filter(msg => msg.type === filter);
         }
-        
+
         messagesList.innerHTML = filteredMessages.map(message => `
             <div class="message-item">
                 <div class="message-header">
@@ -380,14 +394,23 @@ class SOSCISPApp {
     }
     
     filterMessages(filter) {
-        // Atualizar botões ativos
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.classList.remove('active');
-        });
-        document.querySelector(`[data-filter="${filter}"]`).classList.add('active');
-        
-        // Carregar mensagens filtradas
         this.loadMessages(filter);
+    }
+    
+    renderMessages(messages) {
+        // Exemplo de renderização (adapte para seu HTML)
+        const list = document.getElementById('messages-list');
+        if (!list) return;
+        list.innerHTML = '';
+        messages.forEach(msg => {
+            const item = document.createElement('div');
+            item.className = 'message-item';
+            item.innerHTML = `
+                <span class="message-type">${msg.type}</span>
+                <span class="message-content">${msg.content}</span>
+            `;
+            list.appendChild(item);
+        });
     }
     
     async requestLocationPermission() {
@@ -538,31 +561,24 @@ class SOSCISPApp {
     }
     
     sendCustomMessage() {
-        const messageInput = document.getElementById('custom-message-input');
-        const message = messageInput.value.trim();
-        
-        if (!message) {
-            this.showError('Por favor, digite uma mensagem');
+        const input = document.getElementById('custom-message-input');
+        const feedback = document.getElementById('custom-message-feedback');
+        const mensagem = input.value.trim();
+
+        // Limpa feedback anterior
+        feedback.textContent = '';
+        feedback.className = '';
+
+        if (!mensagem) {
+            feedback.textContent = 'Por favor, digite uma mensagem.';
+            feedback.className = 'error';
             return;
         }
-        
-        if (!this.locationData) {
-            this.showError('Localização não disponível');
-            return;
-        }
-        
-        this.showSuccess('Mensagem enviada com sucesso!');
-        messageInput.value = '';
-        
-        const customData = {
-            type: 'text',
-            content: message,
-            location: this.locationData,
-            timestamp: new Date(),
-            sender: this.currentUser.name
-        };
-        
-        console.log('Mensagem personalizada enviada:', customData);
+
+        // Envio da mensagem (simulação)
+        feedback.textContent = 'Mensagem enviada com sucesso!';
+        feedback.className = 'success';
+        input.value = '';
     }
     
     toggleMenu() {
@@ -798,9 +814,24 @@ window.toggleAudioRecording = () => {
 };
 
 window.sendCustomMessage = () => {
-    if (window.sosCISPApp) {
-        window.sosCISPApp.sendCustomMessage();
+    const input = document.getElementById('custom-message-input');
+    const feedback = document.getElementById('custom-message-feedback');
+    const mensagem = input.value.trim();
+
+    // Limpa feedback anterior
+    feedback.textContent = '';
+    feedback.className = '';
+
+    if (!mensagem) {
+        feedback.textContent = 'Por favor, digite uma mensagem.';
+        feedback.className = 'error';
+        return;
     }
+
+    // Envio da mensagem (simulação)
+    feedback.textContent = 'Mensagem enviada com sucesso!';
+    feedback.className = 'success';
+    input.value = '';
 };
 
 window.toggleMenu = () => {
@@ -865,4 +896,4 @@ window.skipSplash = () => {
             console.log('Tela de acesso exibida via fallback');
         }
     }
-}; 
+};
