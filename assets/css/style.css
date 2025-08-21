@@ -417,16 +417,25 @@ body::before {
 /* Telas e Containers */
 .screen {
     min-height: 100vh;
+    width: 100%;
     padding: var(--spacing-xl) var(--spacing-md);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     position: relative;
-
 }
 
-
+.screen.screen-centered {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    padding: var(--spacing-xl) var(--spacing-md);
+    box-sizing: border-box;
+}
 
 .screen.hidden {
     display: none;
@@ -443,6 +452,33 @@ body::before {
     border: 1px solid var(--border-primary);
     position: relative;
     overflow: hidden;
+    margin: 0 auto;
+}
+
+/* Container centralizado com melhor responsividade */
+.container-centered {
+    max-width: 600px;
+    width: 100%;
+    margin: 0 auto;
+    background: var(--bg-card);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-2xl);
+    box-shadow: var(--shadow-lg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border-primary);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Utilitário para centralização absoluta */
+.center-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+    padding: var(--spacing-md);
+    box-sizing: border-box;
 }
 
 .container::before {

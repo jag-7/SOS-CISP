@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,10 +8,12 @@
     <meta name="description" content="Sistema de comunicação de emergência para cidadãos e policiais">
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/responsive.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/x-icon" href="assets/imagens/logo.png">
 </head>
+
 <body>
     <!-- Splash Screen Moderno -->
     <div id="splash-screen" class="splash-screen">
@@ -49,7 +52,7 @@
     </div>
 
     <!-- Tela de Seleção de Acesso -->
-    <div id="access-selection" class="screen hidden">
+    <div id="access-selection" class="screen screen-centered hidden">
         <div class="container">
             <div class="header-section">
                 <div class="header-content">
@@ -61,7 +64,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="access-grid">
                 <div class="access-card police-card" data-access="police">
                     <div class="card-header">
@@ -86,7 +89,7 @@
                         </button>
                     </div>
                 </div>
-                
+
                 <div class="access-card citizen-card" data-access="citizen">
                     <div class="card-header">
                         <div class="card-icon">
@@ -115,7 +118,7 @@
     </div>
 
     <!-- Tela de Login - Polícia -->
-    <div id="police-login" class="screen hidden">
+    <div id="police-login" class="screen screen-centered hidden">
         <div class="container">
             <div class="login-header">
                 <button class="back-button" onclick="showScreen('access-selection')">
@@ -126,7 +129,7 @@
                     <p>Faça login com suas credenciais oficiais</p>
                 </div>
             </div>
-            
+
             <form id="police-login-form" class="login-form">
                 <div class="form-group">
                     <label for="police-id">ID do Agente</label>
@@ -135,7 +138,7 @@
                         <input type="text" id="police-id" name="police-id" placeholder="Ex: POL007" required>
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="police-code">Código Interno</label>
                     <div class="input-wrapper">
@@ -147,7 +150,7 @@
                         Credenciais padrão: POL007 / CISP2007
                     </small>
                 </div>
-                
+
                 <button type="submit" class="submit-button">
                     <span>Entrar no Sistema</span>
                     <i class="fas fa-sign-in-alt"></i>
@@ -186,7 +189,7 @@
                     </div>
                 </div>
             </header>
-            
+
             <main class="dashboard-main">
                 <div class="stats-overview">
                     <div class="stat-card primary">
@@ -202,7 +205,7 @@
                             <span>+12%</span>
                         </div>
                     </div>
-                    
+
                     <div class="stat-card warning">
                         <div class="stat-icon">
                             <i class="fas fa-exclamation-triangle"></i>
@@ -216,7 +219,7 @@
                             <span>+5%</span>
                         </div>
                     </div>
-                    
+
                     <div class="stat-card success">
                         <div class="stat-icon">
                             <i class="fas fa-chart-line"></i>
@@ -231,7 +234,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="messages-dashboard">
                     <div class="section-header">
                         <div class="section-title">
@@ -257,7 +260,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <div id="messages-list" class="messages-list">
                         <!-- Mensagens serão carregadas dinamicamente -->
                     </div>
@@ -267,7 +270,7 @@
     </div>
 
     <!-- Tela de Login - Cidadão -->
-    <div id="citizen-login" class="screen hidden">
+    <div id="citizen-login" class="screen screen-centered hidden">
         <div class="container">
             <div class="login-header">
                 <button class="back-button" onclick="showScreen('access-selection')">
@@ -278,7 +281,7 @@
                     <p>Entre com seus dados pessoais</p>
                 </div>
             </div>
-            
+
             <form id="citizen-login-form" class="login-form">
                 <div class="form-group">
                     <label for="citizen-bi">Número do BI</label>
@@ -287,7 +290,7 @@
                         <input type="text" id="citizen-bi" name="citizen-bi" placeholder="Ex: 123456789" required>
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="citizen-password">Senha</label>
                     <div class="input-wrapper">
@@ -295,12 +298,12 @@
                         <input type="password" id="citizen-password" name="citizen-password" required>
                     </div>
                 </div>
-                
+
                 <button type="submit" class="submit-button">
                     <span>Entrar</span>
                     <i class="fas fa-sign-in-alt"></i>
                 </button>
-                
+
                 <div class="form-footer">
                     <p>Não tem conta? <a href="#" onclick="showScreen('citizen-register')">Cadastrar-se</a></p>
                 </div>
@@ -309,7 +312,7 @@
     </div>
 
     <!-- Tela de Cadastro - Cidadão -->
-    <div id="citizen-register" class="screen hidden">
+    <div id="citizen-register" class="screen screen-centered hidden">
         <div class="container">
             <div class="login-header">
                 <button class="back-button" onclick="showScreen('citizen-login')">
@@ -320,7 +323,7 @@
                     <p>Preencha seus dados pessoais</p>
                 </div>
             </div>
-            
+
             <form id="citizen-register-form" class="register-form">
                 <div class="form-row">
                     <div class="form-group">
@@ -330,7 +333,7 @@
                             <input type="text" id="register-name" name="register-name" required>
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="register-bi">Número do BI</label>
                         <div class="input-wrapper">
@@ -339,7 +342,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="register-email">Email</label>
@@ -348,7 +351,7 @@
                             <input type="email" id="register-email" name="register-email" required>
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="register-phone">Telefone</label>
                         <div class="input-wrapper">
@@ -357,7 +360,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="form-group">
                     <label for="register-address">Endereço</label>
                     <div class="input-wrapper">
@@ -365,7 +368,7 @@
                         <textarea id="register-address" name="register-address" required></textarea>
                     </div>
                 </div>
-                
+
                 <div class="form-row">
                     <div class="form-group">
                         <label for="register-password">Senha</label>
@@ -374,16 +377,17 @@
                             <input type="password" id="register-password" name="register-password" required>
                         </div>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="register-confirm-password">Confirmar Senha</label>
                         <div class="input-wrapper">
                             <i class="fas fa-lock input-icon"></i>
-                            <input type="password" id="register-confirm-password" name="register-confirm-password" required>
+                            <input type="password" id="register-confirm-password" name="register-confirm-password"
+                                required>
                         </div>
                     </div>
                 </div>
-                
+
                 <button type="submit" class="submit-button">
                     <span>Criar Conta</span>
                     <i class="fas fa-user-plus"></i>
@@ -411,7 +415,7 @@
                     </button>
                 </div>
             </header>
-            
+
             <main class="citizen-main">
                 <div class="sos-section">
                     <div class="sos-container">
@@ -425,7 +429,7 @@
                         <p class="sos-description">Pressione para enviar uma solicitação de emergência</p>
                     </div>
                 </div>
-                
+
                 <div class="features-grid">
                     <div class="feature-card">
                         <div class="feature-header">
@@ -441,7 +445,7 @@
                             <span>Enviar Localização</span>
                         </button>
                     </div>
-                    
+
                     <div class="feature-card">
                         <div class="feature-header">
                             <i class="fas fa-comment-dots"></i>
@@ -474,7 +478,7 @@
                             </button>
                         </div>
                     </div>
-                    
+
                     <div class="feature-card">
                         <div class="feature-header">
                             <i class="fas fa-microphone"></i>
@@ -486,14 +490,15 @@
                         </button>
                         <div class="audio-status" id="audio-status"></div>
                     </div>
-                    
+
                     <div class="feature-card full-width">
                         <div class="feature-header">
                             <i class="fas fa-edit"></i>
                             <h3>Mensagem Personalizada</h3>
                         </div>
                         <div class="message-input-container">
-                            <textarea id="custom-message-input" placeholder="Descreva sua emergência em detalhes..."></textarea>
+                            <textarea id="custom-message-input"
+                                placeholder="Descreva sua emergência em detalhes..."></textarea>
                             <button id="send-custom-message-btn" class="send-button">
                                 <i class="fas fa-paper-plane"></i>
                                 <span>Enviar</span>
@@ -520,7 +525,7 @@
                     </button>
                 </div>
             </header>
-            
+
             <main class="dashboard-main">
                 <div class="admin-stats">
                     <div class="admin-stat-card">
@@ -551,7 +556,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="admin-sections">
                     <div class="admin-section">
                         <h3>Gerenciar Usuários</h3>
@@ -559,7 +564,7 @@
                             <!-- Lista de usuários será carregada dinamicamente -->
                         </div>
                     </div>
-                    
+
                     <div class="admin-section">
                         <h3>Estatísticas Gerais</h3>
                         <div id="general-stats" class="general-stats">
@@ -576,4 +581,5 @@
 
     <script src="assets/js/unified.js"></script>
 </body>
+
 </html>
